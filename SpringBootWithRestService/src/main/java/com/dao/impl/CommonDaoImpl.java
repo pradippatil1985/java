@@ -1,49 +1,66 @@
 package com.dao.impl;
 
-import java.util.ArrayList;
 import java.util.List;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.mongodb.core.MongoTemplate;
+import org.springframework.data.mongodb.core.query.Criteria;
+import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.stereotype.Component;
 
+import com.apple.CommonRepository;
 import com.dao.CommonDao;
 import com.pojo.AppData;
-import com.pojo.Greeting;
 
 @Component
 public class CommonDaoImpl implements CommonDao {
 
-	@Override
-	public List<AppData> findAll() {
-		List<AppData> list = new ArrayList<AppData>();
-		for (int i = 1; i < 10; i++) {
-			AppData appData = new Greeting(i, "Pradip - " + i);
-			list.add(appData);
-		}
-		return list;
-	}
+	@Autowired
+	private CommonRepository commonRepository;
+
+	@Autowired
+	private MongoTemplate mongoTemplate;
 
 	@Override
-	public AppData find(int key) {
-		// TODO Auto-generated method stub
-		return null;
+	public AppData find(AppData appData) {
+		return this.commonRepository.findOne("1");
+	}
+
+	@SuppressWarnings("unchecked")
+	@Override
+	public List<AppData> findAll(AppData appData) {
+		Criteria criteria = Criteria.where("firstName").is("Pradip");
+		return (List<AppData>) mongoTemplate.find(Query.query(criteria), appData.getClass());
 	}
 
 	@Override
 	public AppData add(AppData appData) {
-		// TODO Auto-generated method stub
-		return null;
+		return this.commonRepository.insert(appData);
+	}
+
+	@Override
+	public List<AppData> addAll(List<AppData> list) {
+		return this.commonRepository.insert(list);
 	}
 
 	@Override
 	public AppData update(AppData appData) {
-		// TODO Auto-generated method stub
-		return null;
+		return this.commonRepository.save(appData);
+	}
+
+	@Override
+	public List<AppData> updateAll(List<AppData> list) {
+		return this.commonRepository.save(list);
 	}
 
 	@Override
 	public void delete(AppData appData) {
-		// TODO Auto-generated method stub
+		this.commonRepository.delete(appData);
+	}
 
+	@Override
+	public void deleteAll(List<AppData> list) {
+		this.commonRepository.delete(list);
 	}
 
 }
