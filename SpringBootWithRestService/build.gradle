@@ -10,6 +10,8 @@ dependencies {
 	//Spring Data MongoDB
 	compile 'org.springframework.data:spring-data-mongodb:1.10.1.RELEASE'
 	
+	compile 'org.mongodb:mongo-java-driver:3.4.2'
+	
     testCompile 'org.springframework.boot:spring-boot-starter-test:1.5.1.RELEASE'
     testCompile 'com.jayway.jsonpath:json-path:2.2.0'
 }
